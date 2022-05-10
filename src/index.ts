@@ -106,3 +106,4 @@ class TokyoScript {
 }
 
 export { TokyoScript }
+export * from './wind/interfaces'

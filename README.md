@@ -6,7 +6,7 @@ Custom package made by Mid with basic string-based functions and variables.
 import { TokyoScript, FunctionStructure } from '@midowo/tokyo-script.ts'
 
 const Parser = new Parser(MyDiscordClient, {
-    brackets: { start: '{', end: '}' },
+    brackets: 1, // 1 for '{}' and 2 for '[]'
     separator: ',',
     allowEmbeds: true,
     ignore: []

@@ -1,7 +1,9 @@
 import { MessageEmbed } from "discord.js"
 
+export type Brackets = 1 | 2 | 3
+
 export interface TokyoScriptOptions {
-    brackets?: { start: string, end: string },
+    brackets?: Brackets,
     separator?: string,
     ignore?: string[],
     allowEmbeds?: boolean

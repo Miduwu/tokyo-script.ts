@@ -1,4 +1,4 @@
-import { BasicFunction, EmbedFunction, FunctionStructure, MessageObject, TokyoScriptOptions } from "./wind/interfaces";
+import { BasicFunction, EmbedFunction, FunctionStructure, MessageObject, TokyoScriptOptions, Brackets } from "./wind/interfaces";
 import { RandomNumber, Random } from "./wind/functions";
 import { Client, MessageEmbed } from "discord.js";
 import { Parse } from './wind/variables'
@@ -9,6 +9,7 @@ class TokyoScript {
     embed_functions: Map<string, EmbedFunction>
     custom_vars: any[]
     client: Client
+    brackets: { start: string, end: string }
     options: TokyoScriptOptions
     constructor(client: Client, options?: TokyoScriptOptions) {
         if(!(client instanceof Client)) throw new TypeError('TokyoScript: Invalid client provided in constructor.')
@@ -16,28 +17,30 @@ class TokyoScript {
         this.custom_vars = []
         this.embed_functions = new Map()
         this.options = {
-            brackets: { start: options?.brackets?.start || '{', end: options?.brackets?.end || '}' },
+            brackets: options?.brackets || 1,
             separator: options?.separator || ',',
             allowEmbeds: options?.allowEmbeds === false ? false: true,
             ignore: []
         }
+        let brackets =  this.options.brackets == 1 ? '{ }': this.options.brackets == 2 ? '\\[ \\]': '{ }'
+        this.brackets = { start: brackets.split(' ')[0], end: brackets.split(' ')[1] }
         this.client = client
         this.load_functions()
     }
     private unpack(func: string): FunctionStructure {
-        const name = func.split(':')[0].replace(this.options.brackets!.start, '').toLowerCase()
-        const inside = func.match((new RegExp(`:[^${this.options.brackets!.end}]+`)))![0].replace(':', '')
+        const name = func.split(':')[0].toLowerCase()
+        const inside = func.match((new RegExp(`:[^${this.brackets!.end}]+`)))![0].replace(':', '')
         return {
-            name: name,
+            name: name.replace(/[^a-zA-Z]/g, ''),
             inside: inside,
             splits: inside.split(this.options.separator!),
             itself: func,
-            regexp: func.match((new RegExp(`${this.options.brackets!.start}[a-zA-Z]+:[^${this.options.brackets!.end}]+${this.options.brackets!.end}`)))
+            regexp: func.match((new RegExp(`${this.brackets!.start}[a-zA-Z]+:[^${this.brackets!.end}]+${this.brackets!.end}`)))
         }
     }
     private parse_functions(text: string): string {
         if(!text) return ''
-        let functions = text.match((new RegExp(`${this.options.brackets!.start}[a-zA-Z]+:[^${this.options.brackets!.end}]+${this.options.brackets!.end}`, "g")))
+        let functions = text.match((new RegExp(`${this.brackets!.start}[a-zA-Z]+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
         if(!functions) return text
         let final: string = text
         for(const func of functions) {
@@ -52,7 +55,7 @@ class TokyoScript {
     private parse_embeds(text: string): MessageObject {
         if(!text) return { content: '', embeds: [] }
         const embed = new MessageEmbed()
-        let functions = text.match((new RegExp(`${this.options.brackets!.start}[a-zA-Z]+:[^${this.options.brackets!.end}]+${this.options.brackets!.end}`, "g")))
+        let functions = text.match((new RegExp(`${this.brackets!.start}[a-zA-Z]+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
         if(!functions) return { content: text, embeds: [] }
         let final: MessageObject = { content: text, embeds: [] }
         for(const func of functions) {
@@ -66,7 +69,7 @@ class TokyoScript {
     }
     private parse_variables(text: string, context: any): string {
         if(!text) return ''
-        return Parse(text, context, this.custom_vars || [])
+        return Parse(text, context, this.brackets, this.custom_vars || [])
     }
     private load_functions(): void {
         this.addFunction(Random)

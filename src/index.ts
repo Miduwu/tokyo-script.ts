@@ -10,19 +10,17 @@ class TokyoScript {
     custom_vars: any[]
     client: Client
     options: TokyoScriptOptions
-    constructor(client: Client, options: TokyoScriptOptions = {
-        brackets: { start: '{', end: '}' },
-        separator: ',',
-        allowEmbeds: true,
-        ignore: [],
-        
-    }) {
+    constructor(client: Client, options?: TokyoScriptOptions) {
         if(!(client instanceof Client)) throw new TypeError('TokyoScript: Invalid client provided in constructor.')
-        if(typeof options.brackets !== 'object' || typeof options.brackets.start !== 'string' || typeof options.brackets.end !== 'string' || typeof options.separator !== 'string') throw new TypeError('TokyoScript: Invalid brackets provided.')
         this.functions = new Map()
         this.custom_vars = []
         this.embed_functions = new Map()
-        this.options = options
+        this.options = {
+            brackets: { start: options?.brackets?.start || '{', end: options?.brackets?.end || '}' },
+            separator: options?.separator || ',',
+            allowEmbeds: options?.allowEmbeds === false ? false: true,
+            ignore: []
+        }
         this.client = client
         this.load_functions()
     }
@@ -63,6 +61,7 @@ class TokyoScript {
             if(!_.inside ||!Func || this.options.ignore?.includes(_.name)) continue;
             final = Func.code(final, _, embed)
         }
+        final.embeds = !embed.title && !embed.description && !embed.image && !embed.thumbnail && !embed.author && !embed.footer ? []: [embed]
         return final
     }
     private parse_variables(text: string, context: any): string {
@@ -70,8 +69,8 @@ class TokyoScript {
         return Parse(text, context, this.custom_vars || [])
     }
     private load_functions(): void {
-        this.addFunction(Random.name, Random)
-        this.addFunction(RandomNumber.name, RandomNumber)
+        this.addFunction(Random)
+        this.addFunction(RandomNumber)
         for(const func of Embeds.functions) {
             this.embed_functions.set(func.name, { name: func.name, code: func.code })
         }
@@ -83,11 +82,11 @@ class TokyoScript {
         let with_embeds = this.parse_embeds(without_embeds)
         return this.options.allowEmbeds ? with_embeds: without_embeds
     }
-    addFunction(name: string, func: BasicFunction): void {
-        if(!name || !func) throw new TypeError('TokyoScript: Missing parameters in addFunction()')
-        if(typeof name !== 'string') throw new TypeError('TokyoScript: Invalid parameters provided in addFunction().')
-        if(this.functions.has(name.toLowerCase())) throw new TypeError('TokyoScript: This function already exists.')
-        this.functions.set(name.toLowerCase(), func)
+    addFunction(func: BasicFunction): void {
+        if(!func.name || !func) throw new TypeError('TokyoScript: Missing parameters in addFunction()')
+        if(typeof func.name !== 'string') throw new TypeError('TokyoScript: Invalid parameters provided in addFunction().')
+        if(this.functions.has(func.name.toLowerCase())) throw new TypeError('TokyoScript: This function already exists.')
+        this.functions.set(func.name.toLowerCase(), func)
     }
     deleteFunction(name: string): void {
         if(!name) throw new TypeError('TokyoScript: Missing name in deleteFunction()')

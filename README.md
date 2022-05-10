@@ -13,8 +13,11 @@ const Parser = new Parser(MyDiscordClient, {
 })
 
 // Adding custom functions
-Parser.addFuction('uppercase', (text: string, data: FunctionStructure) => {
+Parser.addFunction({
+    name: 'uppercase',
+    code: (text: string, data: FunctionStructure) => {
     return text.replace(data.itself, data.inside.toUppercase())
+}
 })
 // Deleting functions
 Parser.deleteFunction('uppercase')

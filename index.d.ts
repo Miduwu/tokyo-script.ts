@@ -28,7 +28,7 @@ export interface BasicFunction {
 export class TokyoScript {
     constructor(client: Client, options?: TokyoScriptOptions);
     public parse(text: string, context: any): string;
-    public addFunction(name: string, func: Function): void;
+    public addFunction(func: BasicFunction): void;
     public deleteFunction(name: string): void;
     public addVariable(name: string, value: string): void;
     public deleteVariable(name: string): void;

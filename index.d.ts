@@ -1,4 +1,6 @@
 import { Client } from "discord.js"
+
+export type InterpreterTypes = 'FUNCTIONS' | 'EMBEDS' | 'VARIABLES' | 'ALL'
 export type Brackets = 1 | 2
 
 export interface TokyoScriptOptions {
@@ -33,4 +35,5 @@ export class TokyoScript {
     public deleteFunction(name: string): void;
     public addVariable(name: string, value: string): void;
     public deleteVariable(name: string): void;
+    public get(type: InterpreterTypes)
 }

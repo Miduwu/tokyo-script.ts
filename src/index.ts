@@ -1,4 +1,4 @@
-import { BasicFunction, EmbedFunction, FunctionStructure, MessageObject, TokyoScriptOptions, Brackets } from "./wind/interfaces";
+import { BasicFunction, EmbedFunction, FunctionStructure, MessageObject, TokyoScriptOptions} from "./wind/interfaces";
 import { RandomNumber, Random } from "./wind/functions";
 import { Client, MessageEmbed } from "discord.js";
 import { Parse } from './wind/variables'
@@ -40,7 +40,7 @@ class TokyoScript {
     }
     private parse_functions(text: string): string {
         if(!text) return ''
-        let functions = text.match((new RegExp(`${this.brackets!.start}(${Array.from(this.functions, ([name, value]) => name).join('|')})+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
+        let functions = text.match((new RegExp(`${this.brackets!.start}(${Array.from(this.functions, ([name, value]) => name).join('|')})+:[^${this.brackets!.end}]+${this.brackets!.end}`, "gi")))
         if(!functions) return text
         let final: string = text
         for(const func of functions) {
@@ -78,7 +78,7 @@ class TokyoScript {
             this.embed_functions.set(func.name, { name: func.name, code: func.code })
         }
     }
-    parse(text: string, context: any): MessageObject | string {
+    interprete(text: string, context: any): MessageObject | string {
         if(!text) return ''
         if(!context && this.options.allowEmbeds) throw new TypeError('TokyoScript: Invalid context provided. Try with: Message | Interaction | GuildMember')
         let without_embeds = this.parse_functions(this.parse_variables(text, context))

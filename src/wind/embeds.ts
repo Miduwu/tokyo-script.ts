@@ -45,5 +45,21 @@ export default {
                 return object
             }
         },
+        {
+            name: 'footer',
+            code: (object: MessageObject, data: FunctionStructure, embed: MessageEmbed) => {
+                embed.setFooter({text: data.splits[0] || '', iconURL: data.splits[1] || ''})
+                object.content = object.content.replace(data.itself, '')
+                return object
+            }
+        },
+        {
+            name: 'author',
+            code: (object: MessageObject, data: FunctionStructure, embed: MessageEmbed) => {
+                embed.setAuthor({name: data.splits[0] || '', iconURL: data.splits[1] || ''})
+                object.content = object.content.replace(data.itself, '')
+                return object
+            }
+        }
     ]
 }

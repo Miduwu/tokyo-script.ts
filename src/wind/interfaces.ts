@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js"
 
-export type Brackets = 1 | 2 | 3
+export type Brackets = 1 | 2
 
 export interface TokyoScriptOptions {
     brackets?: Brackets,

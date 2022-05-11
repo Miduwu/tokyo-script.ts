@@ -1,6 +1,6 @@
 {
   "name": "@midowo/tokyo-script.ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "typings": "index.d.ts",
   "main": "dist/index.js",

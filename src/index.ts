@@ -40,7 +40,7 @@ class TokyoScript {
     }
     private parse_functions(text: string): string {
         if(!text) return ''
-        let functions = text.match((new RegExp(`${this.brackets!.start}[a-zA-Z]+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
+        let functions = text.match((new RegExp(`${this.brackets!.start}(${Array.from(this.functions, ([name, value]) => name).join('|')})+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
         if(!functions) return text
         let final: string = text
         for(const func of functions) {

@@ -16,6 +16,7 @@ export function Parse(text: string, context: any, brackets: any, custom?: any[])
         'server.name': context.guild?.name,
         'server.members': context.guild?.memberCount?.toString(),
         'server.icon': context.guild?.iconURL({size: 512, dynamic: true}),
+        'server.boosts': context.guild?.premiumSubscriptionCount?.toString(),
         'server.owner.id': context.guild?.ownerId,
         'date.now': `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`,
         'blank': ' ',

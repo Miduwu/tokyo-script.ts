@@ -1,6 +1,6 @@
 {
   "name": "@midowo/tokyo-script.ts",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Custom package made by Mid (For Tokyo Bot) with basic string-based functions and variables.",
   "types": "index.d.ts",
   "main": "dist/index.js",

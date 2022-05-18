@@ -27,9 +27,9 @@ Parser.addVariable('hi', 'bye') // {hi} will be replaced to bye
 Parser.deleteVariable('hi')
 
 // The parser itself:
-Parser.parse('hi {USER.NAME}', interaction)
+Parser.interprete('hi {USER.NAME}', interaction)
 // With messages:
-Parser.parse('hi {USER.NAME}', message)
+Parser.interprete('hi {USER.NAME}', message)
 ```
 
 ### Function Structure:

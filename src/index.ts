@@ -53,7 +53,7 @@ class TokyoScript {
         return final
     }
     private parse_embeds(text: string): MessageObject {
-        if(!text) return { content: '', embeds: [] }
+        if(!text) return { content: null, embeds: [] }
         const embed = new MessageEmbed()
         let functions = text.match((new RegExp(`${this.brackets!.start}[a-zA-Z]+:[^${this.brackets!.end}]+${this.brackets!.end}`, "g")))
         if(!functions) return { content: text, embeds: [] }
@@ -65,6 +65,7 @@ class TokyoScript {
             final = Func.code(final, _, embed)
         }
         final.embeds = !embed.title && !embed.description && !embed.image && !embed.thumbnail && !embed.author && !embed.footer ? []: [embed]
+        final.content = final.content?.trim() || null
         return final
     }
     private parse_variables(text: string, context: any): string {

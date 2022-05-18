@@ -1,11 +1,15 @@
 {
   "name": "@midowo/tokyo-script.ts",
-  "version": "1.0.2",
-  "description": "",
-  "typings": "index.d.ts",
+  "version": "2.0.3",
+  "description": "Custom package made by Mid (For Tokyo Bot) with basic string-based functions and variables.",
+  "types": "index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miduwu/tokyo-script.ts.git"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,4 @@
 import { Client } from "discord.js"
-
-export type InterpreterTypes = 'FUNCTIONS' | 'EMBEDS' | 'VARIABLES' | 'ALL'
 export type Brackets = 1 | 2
 
 export interface TokyoScriptOptions {
@@ -20,7 +18,9 @@ export interface FunctionStructure {
 
 export interface MessageObject {
     embeds: any[]
-    content: string
+    content: string,
+    allowedMentions?: any,
+    files?: any
 }
 
 export interface BasicFunction {
@@ -30,7 +30,7 @@ export interface BasicFunction {
 
 export class TokyoScript {
     constructor(client: Client, options?: TokyoScriptOptions);
-    public parse(text: string, context: any): string | MessageObject;
+    public interprete(text: string, context: any): string | MessageObject;
     public addFunction(func: BasicFunction): void;
     public deleteFunction(name: string): void;
     public addVariable(name: string, value: string): void;

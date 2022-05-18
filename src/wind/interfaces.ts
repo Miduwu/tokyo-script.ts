@@ -19,7 +19,9 @@ export interface FunctionStructure {
 
 export interface MessageObject {
     embeds: any[]
-    content: string
+    content: any,
+    allowedMentions?: any,
+    files?: any
 }
 
 export interface BasicFunction {
